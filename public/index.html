@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Calendario</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario Personal</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Calendario Personal</h1>
-       <!-- Formulario para agregar evento -->
-    <form id="eventoForm">
-      <input type="text" name="titulo" placeholder="Título" required>
-      <input type="date" name="fecha" required>
-      <textarea name="descripcion" placeholder="Descripción"></textarea>
-      <button type="submit">Agregar Evento</button>
-    </form>
+  <h1>📅 Mi Calendario</h1>
 
-    <!-- Lista de eventos -->
-    <ul id="listaEventos"></ul>
-  </div>
+  <form id="eventoForm">
+    <label>
+      Título:
+      <input type="text" id="titulo" name="titulo" required>
+    </label><br><br>
+
+    <label>
+      Fecha:
+      <input type="date" id="fecha" name="fecha" required>
+    </label><br><br>
+
+    <label>
+      Descripción:
+      <textarea id="descripcion" name="descripcion"></textarea>
+    </label><br><br>
+
+    <button type="submit">Añadir evento</button>
+  </form>
+
+  <h2>Lista de eventos</h2>
+  <ul id="listaEventos"></ul>
 
   <script src="script.js"></script>
-</body>
 </body>
 </html>

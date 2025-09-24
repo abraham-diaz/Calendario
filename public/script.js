@@ -4,52 +4,31 @@
 const form = document.getElementById('eventoForm');
 const lista = document.getElementById('listaEventos');
 
-
 // ==========================
 // 2️⃣ Funciones de UI
 // ==========================
-
-/**
- * Crea un elemento <li> para un evento
- * @param {Object} evento - Objeto evento {titulo, fecha, descripcion}
- * @returns {HTMLElement} li
- */
 function crearElementoEvento(evento) {
   const li = document.createElement('li');
   li.innerHTML = `
     <strong>${evento.titulo}</strong> - ${evento.fecha}<br>
-    ${evento.descripcion}
+    ${evento.descripcion || ''}
   `;
   return li;
 }
 
-/**
- * Muestra un array de eventos en la lista
- * @param {Array} eventos 
- */
 function mostrarEventos(eventos) {
   lista.innerHTML = '';
   eventos.forEach(evento => lista.appendChild(crearElementoEvento(evento)));
 }
 
-
 // ==========================
-// 3️⃣ Funciones de API (backend)
+// 3️⃣ Funciones de API
 // ==========================
-
-/**
- * Obtiene todos los eventos desde el backend
- * @returns {Promise<Array>} eventos
- */
 async function obtenerEventos() {
   const res = await fetch('/eventos');
   return res.json();
 }
 
-/**
- * Envía un nuevo evento al backend
- * @param {Object} evento 
- */
 async function agregarEvento(evento) {
   await fetch('/eventos', {
     method: 'POST',
@@ -57,7 +36,6 @@ async function agregarEvento(evento) {
     body: JSON.stringify(evento)
   });
 }
-
 
 // ==========================
 // 4️⃣ Manejo del formulario
@@ -77,7 +55,6 @@ form.addEventListener('submit', async (e) => {
   const eventos = await obtenerEventos();
   mostrarEventos(eventos);
 });
-
 
 // ==========================
 // 5️⃣ Inicialización
