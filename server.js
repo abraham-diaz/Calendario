@@ -55,3 +55,26 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+// Actualizar evento
+app.put('/eventos/:id', (req, res) => {
+  const { titulo, fecha, descripcion } = req.body;
+  const { id } = req.params;
+  db.run(
+    'UPDATE eventos SET titulo=?, fecha=?, descripcion=? WHERE id=?',
+    [titulo, fecha, descripcion, id],
+    function(err) {
+      if(err) return res.status(500).json(err);
+      res.json({ cambios: this.changes });
+    }
+  );
+});
+
+// Eliminar evento
+app.delete('/eventos/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM eventos WHERE id=?', [id], function(err) {
+    if(err) return res.status(500).json(err);
+    res.json({ cambios: this.changes });
+  });
+});

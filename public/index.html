@@ -12,6 +12,17 @@
 
   <div id="calendar"></div>
 
+ <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="cerrarModal" class="close">&times;</span>
+      <h2 id="modalTitulo"></h2>
+      <p id="modalFecha"></p>
+      <textarea id="modalDescripcion" placeholder="Descripción"></textarea>
+      <button id="guardarEvento">Guardar cambios</button>
+      <button id="eliminarEvento">Eliminar evento</button>
+    </div>
+  </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="calendar.js"></script>
 </body>
