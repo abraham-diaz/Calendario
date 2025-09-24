@@ -5,9 +5,8 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const port = 3000;
 
+// Middleware
 app.use(express.json());
-
-// Servir la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Base de datos
@@ -16,6 +15,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
   console.log('Conectado a SQLite.');
 });
 
+// Crear tabla eventos
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS eventos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,17 +35,19 @@ app.get('/eventos', (req, res) => {
 
 app.post('/eventos', (req, res) => {
   const { titulo, fecha, descripcion } = req.body;
+  if (!titulo || !fecha) return res.status(400).json({ error: 'Titulo y fecha son obligatorios' });
+
   db.run(
     'INSERT INTO eventos (titulo, fecha, descripcion) VALUES (?, ?, ?)',
-    [titulo, fecha, descripcion],
-    function (err) {
+    [titulo, fecha, descripcion || ''],
+    function(err) {
       if (err) return res.status(500).json(err);
       res.json({ id: this.lastID });
     }
   );
 });
 
-// Ruta principal -> devuelve index.html
+// Ruta principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

@@ -3,34 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendario Personal</title>
+  <title>Calendario Visual</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>📅 Mi Calendario</h1>
+  <h1>📅 Mi Calendario Visual</h1>
 
-  <form id="eventoForm">
-    <label>
-      Título del evento:
-      <input type="text" id="titulo" name="titulo" required>
-    </label>
-    <label>
-      Fecha:
-      <input type="date" id="fecha" name="fecha" required>
-    </label>
-    <label>
-      Descripción:
-      <textarea id="descripcion" name="descripcion"></textarea>
-    </label>
+  <div id="calendar"></div>
 
-    <button type="submit">Añadir evento</button>
-   <button onclick="window.location.href='eventos.html'">Ver eventos</button>
-
-
-  </form>
-
- 
-
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="calendar.js"></script>
 </body>
 </html>
