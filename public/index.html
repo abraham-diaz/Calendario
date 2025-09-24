@@ -11,25 +11,25 @@
 
   <form id="eventoForm">
     <label>
-      Título:
+      Título del evento:
       <input type="text" id="titulo" name="titulo" required>
-    </label><br><br>
-
+    </label>
     <label>
       Fecha:
       <input type="date" id="fecha" name="fecha" required>
-    </label><br><br>
-
+    </label>
     <label>
       Descripción:
       <textarea id="descripcion" name="descripcion"></textarea>
-    </label><br><br>
+    </label>
 
     <button type="submit">Añadir evento</button>
+   <button onclick="window.location.href='eventos.html'">Ver eventos</button>
+
+
   </form>
 
-  <h2>Lista de eventos</h2>
-  <ul id="listaEventos"></ul>
+ 
 
   <script src="script.js"></script>
 </body>
