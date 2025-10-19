@@ -24,6 +24,26 @@
       <button id="eliminarEvento">Eliminar evento</button>
     </div>
   </div>
+  <!-- Modal para crear nuevo evento -->
+<div id="nuevoModal" class="modal">
+  <div class="modal-content">
+    <span id="cerrarNuevoModal" class="close">&times;</span>
+    <h2>Nuevo evento</h2>
+    <label>Título</label>
+    <input type="text" id="nuevoTitulo">
+    <label>Hora</label>
+    <input type="time" id="nuevoHora">
+    <label>Tipo</label>
+    <select id="nuevoTipo">
+      <option value="recordatorio">Recordatorio</option>
+      <option value="reunion">Reunión</option>
+      <option value="tarea">Tarea</option>
+    </select>
+    <label>Descripción</label>
+    <textarea id="nuevoDescripcion"></textarea>
+    <button id="guardarNuevoEvento">Guardar</button>
+    <button id="cancelarNuevoEvento">Cancelar</button>
+  </div>
   
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="calendar.js"></script>

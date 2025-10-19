@@ -1,28 +1,118 @@
+/* GENERAL */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
   padding: 20px;
-  background: #f5f5f5;
 }
 
 h1 {
   text-align: center;
+  color: #3a86ff;
 }
 
+/* CALENDARIO */
 #calendar {
   max-width: 900px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-h1 { text-align: center; }
-#calendar { max-width: 900px; margin: 0 auto; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+/* CABECERA DE DÍAS */
+.fc-col-header-cell-cushion {
+  color: #050505;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px 0;
+}
 
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.4); }
-.modal-content { background: #fff; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 400px; }
-.close { float: right; cursor: pointer; font-size: 24px; }
-textarea, input[type="time"] { width: 100%; margin: 10px 0; padding: 5px; }
-button { margin-right: 10px; cursor: pointer; }
+/* EVENTOS */
+.fc-event {
+  border-radius: 8px !important;
+  padding: 2px 6px !important;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Diferentes tipos de evento */
+.evento-reunion { background-color: #ffbe0b !important; color: #000 !important; }
+.evento-tarea { background-color: #8338ec !important; color: #fff !important; }
+.evento-recordatorio { background-color: #3a86ff !important; color: #fff !important; }
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: #ffffff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+textarea, input[type="time"], input[type="text"] {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+/* BOTONES */
+button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#guardarEvento {
+  background-color: #3a86ff;
+  color: #fff;
+  margin-top: 10px;
+}
+
+#guardarEvento:hover {
+  background-color: #2656b3;
+}
+
+#eliminarEvento {
+  background-color: #ff006e;
+  color: #fff;
+  margin-top: 10px;
+}
+
+#eliminarEvento:hover {
+  background-color: #b3004f;
+}
