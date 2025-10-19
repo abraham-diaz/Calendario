@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) return console.error(err.message);
   console.log('Conectado a SQLite.');
+  
 });
 
 // Crear tabla eventos
@@ -21,6 +22,7 @@ db.serialize(() => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo TEXT NOT NULL,
     fecha TEXT NOT NULL,
+    hora TEXT,
     descripcion TEXT
   )`);
 });
