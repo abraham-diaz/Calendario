@@ -1,0 +1,28 @@
+# Base de datos local
+database.db
+database.db.backup
+*.db
+
+# Node modules
+node_modules/
+
+# Package lock (puede causar conflictos entre sistemas)
+package-lock.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Variables de entorno
+.env
+.env.local
