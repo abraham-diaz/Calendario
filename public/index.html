@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="header-container">
+    <button id="verTodosEventos" class="btn-ver-eventos">Ver todos los eventos</button>
+  </div>
   <div id="calendar"></div>
 
  <div id="modal" class="modal">
@@ -42,7 +45,17 @@
     <button id="guardarNuevoEvento">Guardar</button>
     <button id="cancelarNuevoEvento">Cancelar</button>
   </div>
-  
+</div>
+
+<!-- Modal para listar todos los eventos -->
+<div id="listaModal" class="modal">
+  <div class="modal-content modal-lista">
+    <span id="cerrarListaModal" class="close">&times;</span>
+    <h2>Todos los eventos</h2>
+    <div id="listaEventos"></div>
+  </div>
+</div>
+
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script src="calendar.js"></script>
 </body>

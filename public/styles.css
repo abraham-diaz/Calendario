@@ -116,3 +116,345 @@ button {
 #eliminarEvento:hover {
   background-color: #b3004f;
 }
+
+#guardarNuevoEvento {
+  background-color: #3a86ff;
+  color: #fff;
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
+#guardarNuevoEvento:hover {
+  background-color: #2656b3;
+}
+
+#cancelarNuevoEvento {
+  background-color: #6c757d;
+  color: #fff;
+  margin-top: 10px;
+}
+
+#cancelarNuevoEvento:hover {
+  background-color: #545b62;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+/* HEADER CON BOTÓN VER EVENTOS */
+.header-container {
+  max-width: 900px;
+  margin: 0 auto 10px auto;
+  text-align: right;
+  padding: 0 15px;
+}
+
+.btn-ver-eventos {
+  background-color: #06d6a0;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(6, 214, 160, 0.3);
+}
+
+.btn-ver-eventos:hover {
+  background-color: #05b589;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 214, 160, 0.4);
+}
+
+/* MODAL DE LISTA DE EVENTOS */
+.modal-lista {
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-lista h2 {
+  color: #3a86ff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sin-eventos {
+  text-align: center;
+  color: #888;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+/* LISTA DE EVENTOS */
+.eventos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.evento-item {
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-left: 5px solid #3a86ff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.evento-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.evento-item.reunion {
+  border-left-color: #ffbe0b;
+  background-color: #fffbf0;
+}
+
+.evento-item.tarea {
+  border-left-color: #8338ec;
+  background-color: #f8f5ff;
+}
+
+.evento-item.recordatorio {
+  border-left-color: #3a86ff;
+  background-color: #f0f6ff;
+}
+
+.evento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.evento-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  flex: 1;
+}
+
+.evento-tipo {
+  background-color: rgba(0,0,0,0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #555;
+}
+
+.evento-detalles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evento-detalles p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.evento-fecha {
+  font-weight: 600;
+  color: #3a86ff;
+  text-transform: capitalize;
+}
+
+.evento-hora {
+  font-weight: 600;
+  color: #ff006e;
+}
+
+.evento-descripcion {
+  padding-top: 5px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  font-style: italic;
+}
+
+/* RESPONSIVE - TABLETS */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .header-container {
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  #calendar {
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px auto;
+  }
+
+  .modal-content {
+    max-width: 90%;
+    margin: 20% auto;
+    padding: 15px;
+  }
+
+  .modal-lista {
+    max-width: 90%;
+  }
+
+  .fc-toolbar {
+    font-size: 0.9rem;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.2rem !important;
+  }
+
+  button {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .evento-item {
+    padding: 12px;
+  }
+
+  .evento-header h3 {
+    font-size: 1rem;
+  }
+}
+
+/* RESPONSIVE - MÓVILES */
+@media (max-width: 480px) {
+  body {
+    padding: 5px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #calendar {
+    padding: 5px;
+    margin: 5px auto;
+    border-radius: 8px;
+  }
+
+  .modal-content {
+    max-width: 95%;
+    margin: 15% auto;
+    padding: 12px;
+  }
+
+  .close {
+    font-size: 28px;
+  }
+
+  label {
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+
+  textarea, input[type="time"], input[type="text"], select {
+    padding: 10px;
+    font-size: 16px; /* Evita zoom en iOS */
+    margin-top: 3px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    font-size: 1rem;
+  }
+
+  #guardarNuevoEvento, #cancelarNuevoEvento {
+    margin-right: 0;
+  }
+
+  .fc-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1rem !important;
+    margin: 5px 0;
+  }
+
+  .fc-button {
+    padding: 5px 8px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .fc-event {
+    font-size: 0.75rem;
+    padding: 1px 4px !important;
+  }
+
+  /* Mejorar vista de lista en móviles */
+  .fc-list-event-title {
+    font-size: 0.9rem;
+  }
+
+  .fc-list-event-time {
+    font-size: 0.85rem;
+  }
+
+  /* Lista de eventos responsive */
+  .header-container {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .btn-ver-eventos {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .modal-lista {
+    max-width: 95%;
+    max-height: 85vh;
+  }
+
+  .evento-item {
+    padding: 10px;
+  }
+
+  .evento-item:hover {
+    transform: none;
+  }
+
+  .evento-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .evento-header h3 {
+    font-size: 0.95rem;
+  }
+
+  .evento-tipo {
+    align-self: flex-start;
+  }
+
+  .evento-detalles p {
+    font-size: 0.85rem;
+  }
+}

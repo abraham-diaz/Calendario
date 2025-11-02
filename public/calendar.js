@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nuevoTipo = document.getElementById('nuevoTipo');
   const nuevoDescripcion = document.getElementById('nuevoDescripcion');
 
+  // MODAL LISTA DE EVENTOS
+  const listaModal = document.getElementById('listaModal');
+  const cerrarListaModal = document.getElementById('cerrarListaModal');
+  const verTodosEventosBtn = document.getElementById('verTodosEventos');
+  const listaEventos = document.getElementById('listaEventos');
+
   let eventoSeleccionado = null;
 
   // FUNCIONES BACKEND
@@ -36,18 +42,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const eventos = await obtenerEventos();
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
+    initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
     locale: 'es',
     firstDay: 1,
     selectable: true,
     editable: true,
     dayMaxEvents: 3,
     eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+    height: 'auto',
+    contentHeight: 'auto',
 
     headerToolbar: {
-      left: 'prev,next today',
+      left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
 
     events: eventos.map(e => ({
@@ -58,6 +66,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       hora: e.hora,
       className: e.tipo || 'evento-recordatorio'
     })),
+
+    // Cambiar vista según tamaño de pantalla
+    windowResize: function(view) {
+      if (window.innerWidth < 768) {
+        calendar.changeView('listWeek');
+      } else {
+        calendar.changeView('dayGridMonth');
+      }
+    },
 
     // CLICK EN DÍA -> abrir modal nuevo evento
     dateClick: (info) => {
@@ -99,9 +116,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CERRAR MODALES
   cerrarModal.onclick = () => modal.style.display = 'none';
   cerrarNuevoModal.onclick = () => nuevoModal.style.display = 'none';
+  cerrarListaModal.onclick = () => listaModal.style.display = 'none';
   window.onclick = (e) => {
     if (e.target == modal) modal.style.display = 'none';
     if (e.target == nuevoModal) nuevoModal.style.display = 'none';
+    if (e.target == listaModal) listaModal.style.display = 'none';
   };
 
   // GUARDAR CAMBIOS MODAL EDITAR
@@ -154,5 +173,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CANCELAR NUEVO EVENTO
   cancelarNuevoEvento.onclick = () => {
     nuevoModal.style.display = 'none';
+  };
+
+  // VER TODOS LOS EVENTOS
+  verTodosEventosBtn.onclick = async () => {
+    const todosEventos = await obtenerEventos();
+
+    if (todosEventos.length === 0) {
+      listaEventos.innerHTML = '<p class="sin-eventos">No hay eventos registrados</p>';
+    } else {
+      // Ordenar eventos por fecha
+      todosEventos.sort((a, b) => {
+        const fechaA = new Date(a.fecha + (a.hora ? 'T' + a.hora : ''));
+        const fechaB = new Date(b.fecha + (b.hora ? 'T' + b.hora : ''));
+        return fechaA - fechaB;
+      });
+
+      let html = '<div class="eventos-lista">';
+      todosEventos.forEach(evento => {
+        const tipoClass = evento.tipo || 'recordatorio';
+        const fecha = new Date(evento.fecha + 'T00:00:00');
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        html += `
+          <div class="evento-item ${tipoClass}">
+            <div class="evento-header">
+              <h3>${evento.titulo}</h3>
+              <span class="evento-tipo">${tipoClass}</span>
+            </div>
+            <div class="evento-detalles">
+              <p class="evento-fecha">📅 ${fechaFormateada}</p>
+              ${evento.hora ? `<p class="evento-hora">🕐 ${evento.hora}</p>` : ''}
+              ${evento.descripcion ? `<p class="evento-descripcion">${evento.descripcion}</p>` : ''}
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      listaEventos.innerHTML = html;
+    }
+
+    listaModal.style.display = 'block';
   };
 });
