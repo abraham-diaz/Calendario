@@ -56,6 +56,7 @@ h1 {
 .evento-reunion { background-color: #ffbe0b !important; color: #000 !important; }
 .evento-tarea { background-color: #8338ec !important; color: #fff !important; }
 .evento-recordatorio { background-color: #3a86ff !important; color: #fff !important; }
+.evento-festivo { background-color: #ff006e !important; color: #fff !important; }
 
 /* MODAL */
 .modal {
@@ -255,6 +256,11 @@ select {
 .evento-item.recordatorio {
   border-left-color: #3a86ff;
   background-color: #f0f6ff;
+}
+
+.evento-item.festivo {
+  border-left-color: #ff006e;
+  background-color: #fff0f6;
 }
 
 .evento-header {

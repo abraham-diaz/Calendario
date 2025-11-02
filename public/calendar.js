@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     calendar.addEvent({
       title: `${titulo}${hora ? ' (' + hora + ')' : ''}`,
       start: hora ? `${fecha}T${hora}` : fecha,
-      className: tipo === 'reunion' ? 'evento-reunion' : tipo === 'tarea' ? 'evento-tarea' : 'evento-recordatorio',
+      className: tipo === 'reunion' ? 'evento-reunion' : tipo === 'tarea' ? 'evento-tarea' : tipo === 'festivo' ? 'evento-festivo' : 'evento-recordatorio',
       id: data.id
     });
 
