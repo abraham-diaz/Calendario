@@ -163,18 +163,18 @@ select {
   box-sizing: border-box;
 }
 
-/* HEADER CON BOTÓN VER EVENTOS */
-.header-container {
+/* FOOTER CON BOTÓN VER EVENTOS */
+.footer-container {
   max-width: 900px;
-  margin: 0 auto 10px auto;
-  text-align: right;
+  margin: 15px auto 20px auto;
+  text-align: center;
   padding: 0 15px;
 }
 
 .btn-ver-eventos {
   background-color: #06d6a0;
   color: #fff;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   border: none;
   font-weight: 600;
@@ -187,6 +187,18 @@ select {
   background-color: #05b589;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(6, 214, 160, 0.4);
+}
+
+/* SEPARACIÓN ENTRE BOTONES DE NAVEGACIÓN */
+.fc .fc-toolbar-chunk {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.fc .fc-button-group {
+  display: flex;
+  gap: 4px;
 }
 
 /* MODAL DE LISTA DE EVENTOS */
@@ -306,8 +318,8 @@ select {
     padding: 10px;
   }
 
-  .header-container {
-    text-align: center;
+  .footer-container {
+    margin: 15px auto;
     padding: 0 10px;
   }
 
@@ -338,8 +350,8 @@ select {
   }
 
   .fc-button {
-    padding: 8px 12px !important;
-    font-size: 0.85rem !important;
+    padding: 8px 10px !important;
+    font-size: 0.8rem !important;
   }
 
   .fc-daygrid-day-number {
@@ -415,24 +427,38 @@ select {
   /* Calendario - mantener vista de mes responsive */
   .fc-toolbar {
     flex-direction: column;
-    gap: 8px;
-    padding: 5px 0;
+    gap: 10px;
+    padding: 8px 0;
   }
 
   .fc-toolbar-chunk {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 6px;
   }
 
   .fc-toolbar-title {
     font-size: 1rem !important;
     margin: 5px 0;
+    width: 100%;
+    text-align: center;
   }
 
   .fc-button {
-    padding: 6px 10px !important;
-    font-size: 0.75rem !important;
+    padding: 8px 6px !important;
+    font-size: 0.7rem !important;
+    min-width: auto !important;
+  }
+
+  .fc-button-group {
+    gap: 3px;
+  }
+
+  /* Botones de vista más compactos */
+  .fc-button-group .fc-button {
+    flex: 1;
+    white-space: nowrap;
   }
 
   /* Días de la semana */
@@ -480,15 +506,15 @@ select {
     font-size: 0.8rem;
   }
 
-  /* Lista de eventos responsive */
-  .header-container {
-    text-align: center;
-    margin-bottom: 10px;
+  /* Botón ver eventos responsive */
+  .footer-container {
+    margin: 15px auto 20px auto;
   }
 
   .btn-ver-eventos {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
+    font-size: 1rem;
   }
 
   .modal-lista {

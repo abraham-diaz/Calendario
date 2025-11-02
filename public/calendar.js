@@ -56,7 +56,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+
+    buttonText: {
+      today: 'Hoy',
+      month: 'Mes',
+      week: 'Semana',
+      day: 'Día',
+      list: 'Lista'
     },
 
     events: eventos.map(e => ({
