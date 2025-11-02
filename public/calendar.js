@@ -42,20 +42,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const eventos = await obtenerEventos();
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth',
+    initialView: 'dayGridMonth',
     locale: 'es',
     firstDay: 1,
     selectable: true,
     editable: true,
-    dayMaxEvents: 3,
+    dayMaxEvents: true,
     eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
     height: 'auto',
     contentHeight: 'auto',
+    fixedWeekCount: false,
 
     headerToolbar: {
-      left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
+      left: 'prev,next today',
       center: 'title',
-      right: window.innerWidth < 768 ? 'listWeek' : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: window.innerWidth < 768 ? 'dayGridMonth' : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
     },
 
     events: eventos.map(e => ({
@@ -66,15 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       hora: e.hora,
       className: e.tipo || 'evento-recordatorio'
     })),
-
-    // Cambiar vista según tamaño de pantalla
-    windowResize: function(view) {
-      if (window.innerWidth < 768) {
-        calendar.changeView('listWeek');
-      } else {
-        calendar.changeView('dayGridMonth');
-      }
-    },
 
     // CLICK EN DÍA -> abrir modal nuevo evento
     dateClick: (info) => {

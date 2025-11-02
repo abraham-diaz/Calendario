@@ -35,6 +35,21 @@ h1 {
   padding: 2px 6px !important;
   font-size: 0.85rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  border: none !important;
+}
+
+/* Días del calendario */
+.fc-daygrid-day {
+  cursor: pointer;
+}
+
+.fc-daygrid-day:hover {
+  background-color: #f8f9fa;
+}
+
+.fc-day-today {
+  background-color: #fff9e6 !important;
 }
 
 /* Diferentes tipos de evento */
@@ -312,12 +327,27 @@ select {
     max-width: 90%;
   }
 
+  /* Calendario en tablets */
   .fc-toolbar {
     font-size: 0.9rem;
+    gap: 8px;
   }
 
   .fc-toolbar-title {
     font-size: 1.2rem !important;
+  }
+
+  .fc-button {
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .fc-daygrid-day-number {
+    font-size: 0.9rem !important;
+  }
+
+  .fc-event {
+    font-size: 0.75rem !important;
   }
 
   button {
@@ -345,7 +375,7 @@ select {
   }
 
   #calendar {
-    padding: 5px;
+    padding: 8px;
     margin: 5px auto;
     border-radius: 8px;
   }
@@ -382,14 +412,17 @@ select {
     margin-right: 0;
   }
 
+  /* Calendario - mantener vista de mes responsive */
   .fc-toolbar {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding: 5px 0;
   }
 
   .fc-toolbar-chunk {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .fc-toolbar-title {
@@ -398,22 +431,53 @@ select {
   }
 
   .fc-button {
-    padding: 5px 8px !important;
-    font-size: 0.8rem !important;
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
   }
 
+  /* Días de la semana */
+  .fc-col-header-cell {
+    font-size: 0.7rem !important;
+    padding: 4px 2px !important;
+  }
+
+  .fc-col-header-cell-cushion {
+    padding: 4px 0 !important;
+  }
+
+  /* Celdas de días */
+  .fc-daygrid-day {
+    min-height: 50px !important;
+  }
+
+  .fc-daygrid-day-number {
+    font-size: 0.85rem !important;
+    padding: 4px !important;
+  }
+
+  .fc-daygrid-day-top {
+    flex-direction: row;
+  }
+
+  /* Eventos en el calendario */
   .fc-event {
-    font-size: 0.75rem;
-    padding: 1px 4px !important;
+    font-size: 0.65rem !important;
+    padding: 2px 3px !important;
+    margin-bottom: 1px !important;
   }
 
-  /* Mejorar vista de lista en móviles */
-  .fc-list-event-title {
-    font-size: 0.9rem;
+  .fc-event-title {
+    font-weight: 500;
   }
 
-  .fc-list-event-time {
-    font-size: 0.85rem;
+  /* Botón "+más" */
+  .fc-daygrid-more-link {
+    font-size: 0.7rem !important;
+  }
+
+  /* Popover de eventos */
+  .fc-popover {
+    font-size: 0.8rem;
   }
 
   /* Lista de eventos responsive */
