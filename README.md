@@ -1,93 +1,93 @@
-# Calendario Visual
+# Visual Calendar
 
-Aplicación web de calendario interactivo para gestionar eventos con interfaz visual intuitiva.
+Interactive web calendar application for managing events with an intuitive visual interface.
 
-## Características
+## Features
 
-- Visualización de calendario mensual interactivo
-- Creación, edición y eliminación de eventos
-- Tipos de eventos: recordatorio, reunión, tarea y festivo
-- Almacenamiento persistente en base de datos SQLite
-- Interfaz responsiva y fácil de usar
+- Interactive monthly calendar visualization
+- Create, edit, and delete events
+- Event types: reminder, meeting, task, and holiday
+- Persistent storage with SQLite database
+- Responsive and user-friendly interface
 
-## Tecnologías
+## Technologies
 
-- **Backend**: Node.js con Express
-- **Base de datos**: SQLite3
+- **Backend**: Node.js with Express
+- **Database**: SQLite3
 - **Frontend**: HTML, CSS, JavaScript
-- **Librería de calendario**: FullCalendar 6.1.8
+- **Calendar library**: FullCalendar 6.1.8
 
-## Requisitos previos
+## Prerequisites
 
-- Node.js (versión 12 o superior)
-- npm (incluido con Node.js)
+- Node.js (version 12 or higher)
+- npm (included with Node.js)
 
-## Instalación
+## Installation
 
-1. Clonar el repositorio:
+1. Clone the repository:
 ```bash
-git clone <url-del-repositorio>
+git clone <repository-url>
 cd Calendario
 ```
 
-2. Instalar dependencias:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-## Uso
+## Usage
 
-1. Iniciar el servidor:
+1. Start the server:
 ```bash
 npm start
 ```
 
-2. Abrir el navegador en:
+2. Open your browser at:
 ```
 http://localhost:3000
 ```
 
-## Funcionalidades
+## Functionalities
 
-### Crear evento
-- Haz clic en cualquier día del calendario
-- Completa el formulario con título, hora, tipo y descripción
-- Haz clic en "Guardar"
+### Create event
+- Click on any day in the calendar
+- Fill out the form with title, time, type, and description
+- Click "Save"
 
-### Editar evento
-- Haz clic en un evento existente
-- Modifica los campos deseados
-- Haz clic en "Guardar cambios"
+### Edit event
+- Click on an existing event
+- Modify the desired fields
+- Click "Save changes"
 
-### Eliminar evento
-- Haz clic en un evento
-- Haz clic en "Eliminar evento"
+### Delete event
+- Click on an event
+- Click "Delete event"
 
-### Ver todos los eventos
-- Haz clic en el botón "Ver todos los eventos" en la parte inferior
+### View all events
+- Click the "View all events" button at the bottom
 
-## Estructura del proyecto
+## Project structure
 
 ```
 Calendario/
 ├── public/
-│   ├── calendar.js      # Lógica del calendario
-│   ├── index.html       # Página principal
-│   └── styles.css       # Estilos
-├── database.db          # Base de datos SQLite
-├── server.js            # Servidor Express
-├── package.json         # Configuración y dependencias
+│   ├── calendar.js      # Calendar logic
+│   ├── index.html       # Main page
+│   └── styles.css       # Styles
+├── database.db          # SQLite database
+├── server.js            # Express server
+├── package.json         # Configuration and dependencies
 └── README.md
 ```
 
 ## API Endpoints
 
-- `GET /` - Página principal
-- `GET /eventos` - Obtener todos los eventos
-- `POST /eventos` - Crear nuevo evento
-- `PUT /eventos/:id` - Actualizar evento
-- `DELETE /eventos/:id` - Eliminar evento
+- `GET /` - Main page
+- `GET /eventos` - Get all events
+- `POST /eventos` - Create new event
+- `PUT /eventos/:id` - Update event
+- `DELETE /eventos/:id` - Delete event
 
-## Licencia
+## License
 
 ISC
