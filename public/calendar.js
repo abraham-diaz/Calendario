@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return fechaA - fechaB;
       });
 
-      let html = '<div class="eventos-lista">';
+      let html = '<div classCream="eventos-lista">';
       todosEventos.forEach(evento => {
         const tipoClass = evento.tipo || 'recordatorio';
         const fecha = new Date(evento.fecha + 'T00:00:00');
