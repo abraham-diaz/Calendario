@@ -11,7 +11,8 @@ const ICS_URL = process.env.ICS_URL;
 // Función para parsear ICS a eventos JSON
 function parseICS(icsData) {
   const eventos = [];
-  const lines = icsData.replace(/\r\n /g, '').split(/\r?\n/);
+  // Unir líneas que continúan (empiezan con espacio)
+  const lines = icsData.replace(/\r\n[ \t]/g, '').replace(/\r?\n[ \t]/g, '').split(/\r?\n/);
 
   let evento = null;
 
@@ -24,16 +25,21 @@ function parseICS(icsData) {
       }
       evento = null;
     } else if (evento) {
-      const [key, ...valueParts] = line.split(':');
-      const value = valueParts.join(':');
+      // Manejar líneas con parámetros como DTSTART;TZID=...:valor
+      const colonIndex = line.indexOf(':');
+      if (colonIndex === -1) continue;
 
-      if (key.startsWith('DTSTART')) {
+      const keyPart = line.substring(0, colonIndex);
+      const value = line.substring(colonIndex + 1);
+      const key = keyPart.split(';')[0]; // Obtener solo la clave sin parámetros
+
+      if (key === 'DTSTART') {
         const fecha = parseICSDate(value);
         if (fecha) {
           evento.fecha = fecha.date;
           evento.hora = fecha.time;
         }
-      } else if (key.startsWith('DTEND')) {
+      } else if (key === 'DTEND') {
         const fecha = parseICSDate(value);
         if (fecha) {
           evento.fechaFin = fecha.date;
