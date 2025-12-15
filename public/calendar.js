@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       id: e.id,
       descripcion: e.descripcion,
       hora: e.hora,
-      className: e.tipo || 'evento-recordatorio'
+      className: e.tipo ? `evento-${e.tipo}` : 'evento-recordatorio'
     })),
 
     // CLICK EN DÍA -> abrir modal nuevo evento
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     calendar.addEvent({
       title: `${titulo}${hora ? ' (' + hora + ')' : ''}`,
       start: hora ? `${fecha}T${hora}` : fecha,
-      className: tipo === 'reunion' ? 'evento-reunion' : tipo === 'tarea' ? 'evento-tarea' : tipo === 'festivo' ? 'evento-festivo' : 'evento-recordatorio',
+      className: `evento-${tipo}`,
       id: data.id
     });
 
