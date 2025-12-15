@@ -31,6 +31,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // FUNCIONES BACKEND
   const obtenerEventos = async () => (await fetch('/eventos')).json();
+  const obtenerEventosTeams = async () => {
+    try {
+      const res = await fetch('/eventos-teams');
+      if (!res.ok) return [];
+      return await res.json();
+    } catch (e) {
+      console.error('Error al cargar eventos de Teams:', e);
+      return [];
+    }
+  };
   const agregarEvento = async (evento) =>
     fetch('/eventos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(evento) });
   const actualizarEvento = async (id, evento) =>
@@ -38,8 +48,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const eliminarEvento = async (id) =>
     fetch(`/eventos/${id}`, { method: 'DELETE' });
 
-  // CARGAR EVENTOS EXISTENTES
-  const eventos = await obtenerEventos();
+  // CARGAR EVENTOS EXISTENTES (locales y Teams en paralelo)
+  const [eventos, eventosTeams] = await Promise.all([
+    obtenerEventos(),
+    obtenerEventosTeams()
+  ]);
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
@@ -66,14 +79,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       day: 'Día'
     },
 
-    events: eventos.map(e => ({
-      title: `${e.titulo}${e.hora ? ' (' + e.hora + ')' : ''}`,
-      start: e.hora ? `${e.fecha}T${e.hora}` : e.fecha,
-      id: e.id,
-      descripcion: e.descripcion,
-      hora: e.hora,
-      className: e.tipo ? `evento-${e.tipo}` : 'evento-recordatorio'
-    })),
+    events: [
+      // Eventos locales
+      ...eventos.map(e => ({
+        title: `${e.titulo}${e.hora ? ' (' + e.hora + ')' : ''}`,
+        start: e.hora ? `${e.fecha}T${e.hora}` : e.fecha,
+        id: e.id,
+        extendedProps: {
+          descripcion: e.descripcion,
+          hora: e.hora,
+          esTeams: false
+        },
+        className: e.tipo ? `evento-${e.tipo}` : 'evento-recordatorio'
+      })),
+      // Eventos de Teams/Outlook
+      ...eventosTeams.map(e => ({
+        title: `${e.titulo}${e.hora ? ' (' + e.hora + ')' : ''}`,
+        start: e.hora ? `${e.fecha}T${e.hora}` : e.fecha,
+        end: e.horaFin ? `${e.fechaFin || e.fecha}T${e.horaFin}` : null,
+        id: e.id,
+        extendedProps: {
+          descripcion: e.descripcion,
+          hora: e.hora,
+          ubicacion: e.ubicacion,
+          esTeams: true
+        },
+        className: 'evento-teams',
+        editable: false
+      }))
+    ],
 
     // CLICK EN DÍA -> abrir modal nuevo evento
     dateClick: (info) => {
@@ -85,13 +119,33 @@ document.addEventListener('DOMContentLoaded', async () => {
       nuevoModal.style.display = 'block';
     },
 
-    // CLICK EN EVENTO -> abrir modal editar
+    // CLICK EN EVENTO -> abrir modal editar (o ver si es Teams)
     eventClick: (info) => {
       eventoSeleccionado = info.event;
+      const esTeams = eventoSeleccionado.extendedProps.esTeams;
+
       modalTitulo.textContent = eventoSeleccionado.title;
       modalFecha.textContent = eventoSeleccionado.startStr.split('T')[0];
       modalHora.value = eventoSeleccionado.extendedProps.hora || '';
       modalDescripcion.value = eventoSeleccionado.extendedProps.descripcion || '';
+
+      // Si es evento de Teams, deshabilitar edición
+      if (esTeams) {
+        modalHora.disabled = true;
+        modalDescripcion.disabled = true;
+        guardarEventoBtn.style.display = 'none';
+        eliminarEventoBtn.style.display = 'none';
+        // Mostrar ubicación si existe
+        if (eventoSeleccionado.extendedProps.ubicacion) {
+          modalDescripcion.value = `📍 ${eventoSeleccionado.extendedProps.ubicacion}\n\n${modalDescripcion.value}`;
+        }
+      } else {
+        modalHora.disabled = false;
+        modalDescripcion.disabled = false;
+        guardarEventoBtn.style.display = '';
+        eliminarEventoBtn.style.display = '';
+      }
+
       modal.style.display = 'block';
     },
 

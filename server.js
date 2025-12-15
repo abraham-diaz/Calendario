@@ -1,8 +1,85 @@
 const express = require('express');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
+require('dotenv').config();
 
 const app = express();
+
+// URL del calendario ICS de Teams/Outlook (desde variable de entorno)
+const ICS_URL = process.env.ICS_URL;
+
+// Función para parsear ICS a eventos JSON
+function parseICS(icsData) {
+  const eventos = [];
+  const lines = icsData.replace(/\r\n /g, '').split(/\r?\n/);
+
+  let evento = null;
+
+  for (const line of lines) {
+    if (line === 'BEGIN:VEVENT') {
+      evento = {};
+    } else if (line === 'END:VEVENT' && evento) {
+      if (evento.titulo && evento.fecha) {
+        eventos.push(evento);
+      }
+      evento = null;
+    } else if (evento) {
+      const [key, ...valueParts] = line.split(':');
+      const value = valueParts.join(':');
+
+      if (key.startsWith('DTSTART')) {
+        const fecha = parseICSDate(value);
+        if (fecha) {
+          evento.fecha = fecha.date;
+          evento.hora = fecha.time;
+        }
+      } else if (key.startsWith('DTEND')) {
+        const fecha = parseICSDate(value);
+        if (fecha) {
+          evento.fechaFin = fecha.date;
+          evento.horaFin = fecha.time;
+        }
+      } else if (key === 'SUMMARY') {
+        evento.titulo = value;
+      } else if (key === 'DESCRIPTION') {
+        evento.descripcion = value.replace(/\\n/g, '\n').replace(/\\,/g, ',');
+      } else if (key === 'UID') {
+        evento.id = 'teams-' + value;
+      } else if (key === 'LOCATION') {
+        evento.ubicacion = value;
+      }
+    }
+  }
+
+  return eventos;
+}
+
+// Parsear fecha ICS (formato: 20231215T100000Z o 20231215)
+function parseICSDate(value) {
+  if (!value) return null;
+
+  // Formato con tiempo: 20231215T100000Z
+  const matchDateTime = value.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
+  if (matchDateTime) {
+    const [, year, month, day, hour, min] = matchDateTime;
+    return {
+      date: `${year}-${month}-${day}`,
+      time: `${hour}:${min}`
+    };
+  }
+
+  // Formato solo fecha: 20231215
+  const matchDate = value.match(/(\d{4})(\d{2})(\d{2})/);
+  if (matchDate) {
+    const [, year, month, day] = matchDate;
+    return {
+      date: `${year}-${month}-${day}`,
+      time: null
+    };
+  }
+
+  return null;
+}
 const port = 3000;
 
 // Middleware
@@ -25,6 +102,22 @@ db.serialize(() => {
     hora TEXT,
     descripcion TEXT
   )`);
+});
+
+// Endpoint para obtener eventos de Teams/Outlook
+app.get('/eventos-teams', async (req, res) => {
+  try {
+    const response = await fetch(ICS_URL);
+    if (!response.ok) {
+      throw new Error(`Error al obtener ICS: ${response.status}`);
+    }
+    const icsData = await response.text();
+    const eventos = parseICS(icsData);
+    res.json(eventos);
+  } catch (error) {
+    console.error('Error al obtener eventos de Teams:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Rutas API
