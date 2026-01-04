@@ -42,21 +42,16 @@ export const generarHTMLListaEventos = (eventos) => {
     return '<p class="sin-eventos">No hay eventos registrados</p>';
   }
 
-  // Ordenar eventos por fecha
-  const eventosOrdenados = [...eventos].sort((a, b) => {
-    const fechaA = new Date(a.fecha + (a.hora ? 'T' + a.hora : ''));
-    const fechaB = new Date(b.fecha + (b.hora ? 'T' + b.hora : ''));
-    return fechaA - fechaB;
-  });
-
   let html = '<div class="eventos-lista">';
 
-  eventosOrdenados.forEach(evento => {
+  // Los eventos ya vienen ordenados del backend (más recientes primero)
+  eventos.forEach(evento => {
     const tipoClass = evento.tipo || 'recordatorio';
     const fechaFormateada = formatearFecha(evento.fecha);
 
     html += `
-      <div class="evento-item ${tipoClass}">
+      <div class="evento-item ${tipoClass}" data-id="${evento.id}">
+        <button class="evento-eliminar" data-id="${evento.id}">&times;</button>
         <div class="evento-header">
           <h3>${evento.titulo}</h3>
           <span class="evento-tipo">${tipoClass}</span>

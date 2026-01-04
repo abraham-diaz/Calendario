@@ -128,8 +128,11 @@ app.get('/eventos-teams', async (req, res) => {
 
 // Rutas API
 app.get('/eventos', (req, res) => {
-  db.all('SELECT * FROM eventos', [], (err, rows) => {
-    if (err) return res.status(500).json(err);
+  db.all('SELECT * FROM eventos ORDER BY fecha DESC', [], (err, rows) => {
+    if (err) {
+      console.error('Error en consulta eventos:', err);
+      return res.status(500).json(err);
+    }
     res.json(rows);
   });
 });
