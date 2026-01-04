@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
+const { RRule } = require('rrule');
 require('dotenv').config();
 
 const app = express();
@@ -18,10 +19,19 @@ function parseICS(icsData) {
 
   for (const line of lines) {
     if (line === 'BEGIN:VEVENT') {
-      evento = {};
+      evento = { rrule: null, dtstart: null };
     } else if (line === 'END:VEVENT' && evento) {
       if (evento.titulo && evento.fecha) {
-        eventos.push(evento);
+        // Si tiene RRULE, expandir las ocurrencias
+        if (evento.rrule && evento.dtstart) {
+          const expandidos = expandirRecurrencia(evento);
+          eventos.push(...expandidos);
+        } else {
+          // Evento único, agregar directamente
+          delete evento.rrule;
+          delete evento.dtstart;
+          eventos.push(evento);
+        }
       }
       evento = null;
     } else if (evento) {
@@ -38,6 +48,7 @@ function parseICS(icsData) {
         if (fecha) {
           evento.fecha = fecha.date;
           evento.hora = fecha.time;
+          evento.dtstart = fecha.dateObj;
         }
       } else if (key === 'DTEND') {
         const fecha = parseICSDate(value);
@@ -53,11 +64,70 @@ function parseICS(icsData) {
         evento.id = 'teams-' + value;
       } else if (key === 'LOCATION') {
         evento.ubicacion = value;
+      } else if (key === 'RRULE') {
+        evento.rrule = value;
       }
     }
   }
 
   return eventos;
+}
+
+// Expandir eventos recurrentes usando RRULE
+function expandirRecurrencia(evento) {
+  const eventos = [];
+
+  try {
+    // Parsear la RRULE
+    const rruleStr = `DTSTART:${formatDateForRRule(evento.dtstart)}\nRRULE:${evento.rrule}`;
+    const rule = RRule.fromString(rruleStr);
+
+    // Obtener ocurrencias para los próximos 6 meses
+    const ahora = new Date();
+    const hasta = new Date();
+    hasta.setMonth(hasta.getMonth() + 6);
+
+    const ocurrencias = rule.between(ahora, hasta, true);
+
+    for (const fecha of ocurrencias) {
+      const nuevoEvento = {
+        ...evento,
+        id: `${evento.id}-${fecha.getTime()}`,
+        fecha: formatDate(fecha),
+        fechaFin: formatDate(fecha)
+      };
+      delete nuevoEvento.rrule;
+      delete nuevoEvento.dtstart;
+      eventos.push(nuevoEvento);
+    }
+  } catch (error) {
+    console.error('Error expandiendo recurrencia:', error);
+    // Si falla, agregar el evento original
+    delete evento.rrule;
+    delete evento.dtstart;
+    eventos.push(evento);
+  }
+
+  return eventos;
+}
+
+// Formatear fecha para RRule
+function formatDateForRRule(date) {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hour = String(date.getUTCHours()).padStart(2, '0');
+  const min = String(date.getUTCMinutes()).padStart(2, '0');
+  const sec = String(date.getUTCSeconds()).padStart(2, '0');
+  return `${year}${month}${day}T${hour}${min}${sec}Z`;
+}
+
+// Formatear fecha a YYYY-MM-DD
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 // Parsear fecha ICS (formato: 20231215T100000Z o 20231215)
@@ -67,10 +137,11 @@ function parseICSDate(value) {
   // Formato con tiempo: 20231215T100000Z
   const matchDateTime = value.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
   if (matchDateTime) {
-    const [, year, month, day, hour, min] = matchDateTime;
+    const [, year, month, day, hour, min, sec] = matchDateTime;
     return {
       date: `${year}-${month}-${day}`,
-      time: `${hour}:${min}`
+      time: `${hour}:${min}`,
+      dateObj: new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(min), parseInt(sec)))
     };
   }
 
@@ -80,7 +151,8 @@ function parseICSDate(value) {
     const [, year, month, day] = matchDate;
     return {
       date: `${year}-${month}-${day}`,
-      time: null
+      time: null,
+      dateObj: new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day)))
     };
   }
 
