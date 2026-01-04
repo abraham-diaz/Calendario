@@ -166,6 +166,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   calendar.render();
 
+  // ACTUALIZACIÓN DIARIA DE EVENTOS DE OUTLOOK
+  const actualizarEventosTeams = async () => {
+    try {
+      const nuevosEventosTeams = await obtenerEventosTeams();
+
+      // Eliminar eventos de Teams existentes
+      calendar.getEvents()
+        .filter(e => e.extendedProps.esTeams)
+        .forEach(e => e.remove());
+
+      // Agregar los nuevos eventos de Teams
+      nuevosEventosTeams.forEach(e => {
+        calendar.addEvent({
+          title: `${e.titulo}${e.hora ? ' (' + e.hora + ')' : ''}`,
+          start: e.hora ? `${e.fecha}T${e.hora}` : e.fecha,
+          end: e.horaFin ? `${e.fechaFin || e.fecha}T${e.horaFin}` : null,
+          id: e.id,
+          extendedProps: {
+            descripcion: e.descripcion,
+            hora: e.hora,
+            ubicacion: e.ubicacion,
+            esTeams: true
+          },
+          className: 'evento-teams',
+          editable: false
+        });
+      });
+
+      console.log('Eventos de Outlook actualizados:', new Date().toLocaleString());
+    } catch (error) {
+      console.error('Error al actualizar eventos de Outlook:', error);
+    }
+  };
+
+  // Actualizar cada 24 horas (86400000 ms)
+  setInterval(actualizarEventosTeams, 24 * 60 * 60 * 1000);
+
   // CERRAR MODALES
   cerrarModal.onclick = () => modal.style.display = 'none';
   cerrarNuevoModal.onclick = () => nuevoModal.style.display = 'none';
