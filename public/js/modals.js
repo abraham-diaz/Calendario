@@ -120,7 +120,24 @@ const configurarModalLista = () => {
   document.getElementById('verTodosEventos').onclick = async () => {
     const todosEventos = await obtenerEventos();
     listaEventos.innerHTML = generarHTMLListaEventos(todosEventos);
-    listaModal.style.display = 'block';
+
+    // Añadir listeners a los botones de eliminar
+    listaEventos.querySelectorAll('.evento-eliminar').forEach(btn => {
+      btn.onclick = async (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        if (confirm('¿Eliminar este evento?')) {
+          await eliminarEvento(id);
+          btn.closest('.evento-item').remove();
+
+          // Eliminar del calendario si existe
+          const eventoCalendario = calendarInstance.getEventById(id);
+          if (eventoCalendario) eventoCalendario.remove();
+        }
+      };
+    });
+
+    listaModal.style.display = 'flex';
   };
 };
 
@@ -148,7 +165,7 @@ export const abrirModalEditar = (evento) => {
     eliminarEventoBtn.style.display = '';
   }
 
-  modal.style.display = 'block';
+  modal.style.display = 'flex';
 };
 
 export const abrirModalNuevo = (fecha) => {
@@ -157,5 +174,5 @@ export const abrirModalNuevo = (fecha) => {
   nuevoHora.value = '';
   nuevoTipo.value = 'recordatorio';
   nuevoDescripcion.value = '';
-  nuevoModal.style.display = 'block';
+  nuevoModal.style.display = 'flex';
 };

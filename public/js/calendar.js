@@ -1,9 +1,8 @@
 // Configuración de FullCalendar
 
 import { actualizarEvento } from './api.js';
-import { abrirModalEditar, abrirModalNuevo } from './modals.js';
 
-export const crearCalendario = (elemento, eventos) => {
+export const crearCalendario = (elemento, eventos, callbacks = {}) => {
   const calendar = new FullCalendar.Calendar(elemento, {
     initialView: 'dayGridMonth',
     locale: 'es',
@@ -32,11 +31,11 @@ export const crearCalendario = (elemento, eventos) => {
     events: eventos,
 
     dateClick: (info) => {
-      abrirModalNuevo(info.dateStr);
+      if (callbacks.onDateClick) callbacks.onDateClick(info.dateStr);
     },
 
     eventClick: (info) => {
-      abrirModalEditar(info.event);
+      if (callbacks.onEventClick) callbacks.onEventClick(info.event);
     },
 
     eventDrop: async (info) => {
