@@ -26,3 +26,10 @@ Thumbs.db
 # Variables de entorno
 .env
 .env.local
+
+# Build output
+dist/
+
+#Claude
+.claude/
+CLAUDE.md
