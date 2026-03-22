@@ -1,0 +1,13 @@
+node_modules
+dist
+database.db
+*.db
+.env
+.env.local
+.git
+.github
+.claude
+.vscode
+*.log
+CLAUDE.md
+README.md

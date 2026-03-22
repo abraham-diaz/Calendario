@@ -1,7 +1,8 @@
 import sqlite3 from 'sqlite3';
 import type { Evento, EventoCreate } from './types';
 
-const db = new sqlite3.Database('./database.db', (err) => {
+const dbPath = process.env.DB_PATH || './database.db';
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) return console.error(err.message);
   console.log('Conectado a SQLite.');
 });

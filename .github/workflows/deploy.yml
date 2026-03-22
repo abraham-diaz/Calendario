@@ -1,0 +1,26 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.RASPI_HOST }}
+          username: ${{ secrets.RASPI_USER }}
+          key: ${{ secrets.RASPI_SSH_KEY }}
+          script: |
+            cd ~/calendario
+            git pull origin main
+            docker compose up -d --build --force-recreate
+            docker image prune -f
